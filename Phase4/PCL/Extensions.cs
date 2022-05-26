@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace LazarAlexandruConstantin
@@ -16,11 +18,20 @@ namespace LazarAlexandruConstantin
 
         public static Project Deserialize(this Project _, string filename)
         {
-            var mySerializer = new XmlSerializer(typeof(Project));
-            var myFileStream = new FileStream(filename, FileMode.Open);
-            Project project = (Project)mySerializer.Deserialize(myFileStream);
-            myFileStream.Close();
-            return project;
+
+            try
+            {
+                var mySerializer = new XmlSerializer(typeof(Project));
+                var myFileStream = new FileStream(filename, FileMode.Open);
+                Project project = (Project)mySerializer.Deserialize(myFileStream);
+                myFileStream.Close();
+                return project;
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show($"Error: {e.GetType()}");
+            }
+            return null;
         }
 
         public static string ContentToString(this HashSet<string> set)

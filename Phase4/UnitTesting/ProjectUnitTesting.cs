@@ -31,7 +31,7 @@ namespace UnitTesting
         {
             string[] lines = { line };
             project.AddTasks(lines);
-            Assert.AreEqual(project.tasks.GetTask(1).Name, "UnitTesting");
+            Assert.AreEqual(project.Tasks.GetTask(1).Name, "UnitTesting");
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace UnitTesting
         {
             var project2 = new Project
             {
-                tasks = new HashSet<Task>()
+                Tasks = new HashSet<Task>()
             };
             string[] lines = { line};
             project2.AddTasks(lines);

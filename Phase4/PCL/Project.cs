@@ -6,16 +6,16 @@ namespace LazarAlexandruConstantin
 {
     public class Project
     {
-        public HashSet<Task> tasks;
+        public HashSet<Task> Tasks { get; set; }
 
         public Project()
         {
-            tasks = new HashSet<Task>();
+            Tasks = new HashSet<Task>();
         }
 
         public void Initialize(string fileName)
         {
-            tasks = new HashSet<Task>();
+            Tasks = new HashSet<Task>();
             string fullName = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName + '\\' + fileName;
             string[] lines;
             try
@@ -71,11 +71,11 @@ namespace LazarAlexandruConstantin
                     if (!Exists(currentTask))
                     {
                         AddTaskProperties(currentTask, properties);
-                        tasks.Add(currentTask);
+                        Tasks.Add(currentTask);
                     }
                     else
                     {
-                        foreach (var t in tasks)
+                        foreach (var t in Tasks)
                         {
                             if (t.Equals(currentTask))
                             {
@@ -146,7 +146,7 @@ namespace LazarAlexandruConstantin
 
         public bool Exists(Task currentTask)
         {
-            if (tasks.Contains(currentTask))
+            if (Tasks.Contains(currentTask))
             {
                 return true;
             }
@@ -155,7 +155,7 @@ namespace LazarAlexandruConstantin
 
         public Task GetTask(int index)
         {
-            foreach (var t in tasks)
+            foreach (var t in Tasks)
             {
                 if (t.TaskID == index) return t;
             }
@@ -165,7 +165,7 @@ namespace LazarAlexandruConstantin
         public override string ToString()
         {
             string msg = "";
-            foreach (var t in tasks)
+            foreach (var t in Tasks)
             {
                 msg += t.ToString();
             }
