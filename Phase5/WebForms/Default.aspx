@@ -64,7 +64,7 @@
     function BindTreeView() {
         $.ajax({
             type: "POST",
-            url: "WebForm1.aspx/test",
+            url: "Default.aspx/test",
             data: '{ querytype: "1" }',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
