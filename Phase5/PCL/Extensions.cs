@@ -37,21 +37,30 @@ namespace LazarAlexandruConstantin
         public static string ContentToString(this HashSet<string> set)
         {
             string message = "";
-            foreach (var resouce in set)
+            if (set != null)
             {
-                message += resouce + " ";
+                foreach (var resouce in set)
+                {
+                    message += resouce + " ";
+                }
+                return message;
             }
-            return message;
+            else return "";
         }
 
         public static string ContentToString(this HashSet<Task> set)
         {
-            string message = "";
-            foreach (var task in set)
+            if (set != null)
             {
-                message += task.TaskID + " ";
+                string message = "";
+                foreach (var task in set)
+                {
+                    message += task.TaskID + " ";
+                }
+                return message;
             }
-            return message;
+            else return ""; 
+            
         }
 
         public static bool IsInteger(this string s)

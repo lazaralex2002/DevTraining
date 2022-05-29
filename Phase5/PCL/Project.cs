@@ -13,18 +13,17 @@ namespace LazarAlexandruConstantin
             Tasks = new HashSet<Task>();
         }
 
-        public void Initialize(string fileName)
+        public void Initialize(string path)
         {
             Tasks = new HashSet<Task>();
-            string fullName = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName + '\\' + fileName;
             string[] lines;
             try
             {
-                lines = System.IO.File.ReadAllLines(fullName);
+                lines = System.IO.File.ReadAllLines(path);
             }
             catch (FileNotFoundException)
             {
-                throw new FileNotFoundException($"{fullName} was not found");
+                throw new FileNotFoundException($"{path} was not found");
             }
             catch (Exception e)
             {
