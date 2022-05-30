@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace LazarAlexandruConstantin
@@ -228,7 +229,8 @@ namespace LazarAlexandruConstantin
 
         private void InitializeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            project.Initialize("input.txt");
+            string startupPath = AppDomain.CurrentDomain.BaseDirectory;
+            project.Initialize(startupPath + "\\input.txt");
             LoadDataGrid();
         }
     }

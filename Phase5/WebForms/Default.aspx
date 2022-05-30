@@ -6,8 +6,9 @@
       <div class="dropbtn">File</div>
       <div class="dropdown-content">
         <a onclick="InitializeButtonClicked()">Initialize</a>
-        <a href="#">Save</a>
-        <a href="#">Open</a>
+        <a onclick="SaveButtonClicked()">Save</a>
+        <a onclick="OpenButtonClicked()">Open</a>
+        <a onclick="QuitButtonClicked()">Quit</a>
       </div>
     </div>
 
@@ -28,55 +29,128 @@
             
         </tbody>
 </table>
+<input id="fileDialog" type="file" style="display:none" onchange="ShowFile(this)" accept=".xlm"/>
+<a id="saveFileDialog" href="data:application/xml;charset=utf-8,your code here" download="project.xml" style="display:none">Save</a>
 
 <script>
+    function InitializeButtonClicked()
+    {
+        PageMethods.Initialize(ProjectInitialized, OnError);
+    }
+
+    function OpenButtonClicked()
+    {
+        document.getElementById('fileDialog').click();//if a file is provided the ShowFile function is called     
+    }
+
+    function QuitButtonClicked()
+    {
+        ReplaceBody();
+    }
+
+    function SaveButtonClicked()
+    {
+        PageMethods.Serialize(SerializeSuccess, OnError);
+    }
+
+    function ShowFile(input)
+    {
+        ReplaceBody();
+        let file = input.files[0];
+
+        let reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function ()
+        {
+            console.log(reader.result);
+            PageMethods.Deserialize(reader.result,
+                function (result)
+                {
+                    PageMethods.GetTasks(GetTasksSuccess, OnError);
+                }
+                , OnError);
+        };
+
+        reader.OnError = function () {
+            console.log(reader.error);
+        };
+    }
+
     function ProjectInitialized(result)
     {
-        replaceBody();
-        var tbodyRef = document.getElementById('table').getElementsByTagName('tbody')[0];
-        var nrOfRows = parseInt(result);
+        ReplaceBody();
+        PageMethods.GetTasks(GetTasksSuccess, OnError);
+    }
 
-        for (let i = 0; i < nrOfRows; i++)
+    function SerializeSuccess(result)
+    {
+        let a = document.getElementById("saveFileDialog");
+        let href = "data: application/xml;charset=utf-8," + result;
+        a.href = href;
+        a.click();
+    }
+
+    function AddCellContentEditedEventListner()
+    {
+        let textBefore;
+
+        var row = document.getElementById('table').rows;
+        for (var i = 0; i < row.length; i++) //adding an event listener for focus and lostFocus, for each cell of the table 
         {
-            var newRow = tbodyRef.insertRow();
-            insertRow(i , newRow);
+            for (var j = 0; j < row[i].cells.length; j++)
+            {
+                row[i].cells[j].addEventListener('focusout', (event) =>
+                {
+                    if (event.target.innerText != textBefore) //doing this here so both fuctions have access to the variable textbefore
+                    {
+                        PageMethods.UpdateField($('table tr').index(event.target.parentElement), event.target.cellIndex, event.target.innerText, 
+                            function (response)
+                            {
+                                console.toString()
+                                if (response.toString() === "false")
+                                {
+                                    alert("invalid syntax");
+                                    event.target.innerText = textBefore;
+                                }
+                            }
+                            , OnError);
+                    }
+                });
+                row[i].cells[j].addEventListener('focusin', (event) => {
+                    textBefore = event.target.innerText;
+                });
+            }
         }
     }
 
-    function replaceBody() {
-        const old_tbody = document.getElementById("tableBody")
-        const new_tbody = document.createElement('tbody');
-        old_tbody.parentNode.replaceChild(new_tbody, old_tbody)
+    function GetTasksSuccess(result)
+    {
+        var projectObject = JSON.parse(result);
+
+        projectObject.forEach(obj => {
+            obj.TaskID
+            $("table").find('tbody').append("<tr>" +
+                "<td>" + obj.TaskID + "</td>" +
+                "<td contenteditable=" + "true" + ">" + obj.TaskName + "</td>" +
+                "<td contenteditable=" + "true" + ">" + obj.Duration + "</td>" +
+                "<td contenteditable=" + "true" + ">" + obj.Start + "</td>" +
+                "<td contenteditable=" + "true" + ">" + obj.Finish + "</td>" +
+                "<td>" + obj.Predecessors + "</td>" +
+                "<td>" + obj.ResourceNames + "</td>" +
+                "<td>" + obj.TaskMode + "</td>" +
+                + "</tr>");
+        });
+        AddCellContentEditedEventListner();
     }
 
-    function onError(result) {
+    function OnError(result)
+    {
         alert(result.get_message());
     }
 
-    function InitializeButtonClicked()
+    function ReplaceBody()
     {
-        PageMethods.Initialize(ProjectInitialized, onError);
+        document.getElementById('tableBody').innerText = "";
     }
-
-    function insertRow(index, row) {
-        for (let i = 0; i < 8; ++i)
-        {
-            var newText;
-            PageMethods.GetCell( index, i,
-                function (response) {
-                    var newCell = row.insertCell();
-                    newText = document.createTextNode(response.toString());
-                    newCell.appendChild(newText);
-                } 
-                , onError);
-
-        }
-    }
-
-    function insertCell(result) {
-        $("table").find('tbody').append("<td>" + result + "</td>");
-    }
-
-
 </script>
 </asp:Content>
