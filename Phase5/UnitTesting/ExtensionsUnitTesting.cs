@@ -14,7 +14,8 @@ namespace UnitTesting
         public TasksUnitTesting()
         {
             project = new Project();
-            project.Initialize("input.txt");
+            string startupPath = AppDomain.CurrentDomain.BaseDirectory;
+            project.Initialize(startupPath + "\\input.txt");
         }
 
         [TestMethod]

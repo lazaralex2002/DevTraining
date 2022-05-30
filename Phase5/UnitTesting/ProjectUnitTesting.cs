@@ -15,7 +15,8 @@ namespace UnitTesting
         public ProjectUnitTesting()
         {
             project = new Project();
-            project.Initialize("input.txt");
+            string startupPath = AppDomain.CurrentDomain.BaseDirectory;
+            project.Initialize(startupPath + "\\input.txt");
         }
 
         [TestMethod]
@@ -32,6 +33,18 @@ namespace UnitTesting
             string[] lines = { line };
             project.AddTasks(lines);
             Assert.AreEqual(project.Tasks.GetTask(1).Name, "UnitTesting");
+        }
+
+        [TestMethod]
+        [DataRow("SetTaskField Field:=\"Name\", Value:=\"UnitTesting\", TaskID:=1, ProjectName:=\"Project2\"")]
+        public void addTaskProperties_InputLine_ReturnTrue(string line)//verifies addTaskProperties too
+        {
+            var properties = new Dictionary<string, string>();
+            properties.Add("Name", "UnitTesting");
+            properties.Add("TaskID", "1");
+            var task = new Task(1);
+            project.AddTaskProperties(task, properties);
+            Assert.AreEqual(task.Name, "UnitTesting");
         }
 
         [TestMethod]
