@@ -99,25 +99,26 @@
         {
             for (var j = 0; j < row[i].cells.length; j++)
             {
+                row[i].cells[j].addEventListener('focusin', (event) => {
+                    textBefore = event.target.innerText;
+                });
                 row[i].cells[j].addEventListener('focusout', (event) =>
                 {
                     if (event.target.innerText != textBefore) //doing this here so both fuctions have access to the variable textbefore
                     {
+                        var textBeforePageMethod = textBefore;
                         PageMethods.UpdateField($('table tr').index(event.target.parentElement), event.target.cellIndex, event.target.innerText, 
                             function (response)
                             {
                                 console.toString()
                                 if (response.toString() === "false")
                                 {
+                                    event.target.innerText = textBeforePageMethod;
                                     alert("invalid syntax");
-                                    event.target.innerText = textBefore;
                                 }
                             }
                             , OnError);
                     }
-                });
-                row[i].cells[j].addEventListener('focusin', (event) => {
-                    textBefore = event.target.innerText;
                 });
             }
         }
