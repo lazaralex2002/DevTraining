@@ -29,7 +29,7 @@
             
         </tbody>
 </table>
-<input id="fileDialog" type="file" style="display:none" onchange="ShowFile(this)" accept=".xlm"/>
+<input id="fileDialog" type="file" style="display:none" onchange="ShowFile(this)" accept=".xml"/>
 <a id="saveFileDialog" href="data:application/xml;charset=utf-8,your code here" download="project.xml" style="display:none">Save</a>
 
 <script>
