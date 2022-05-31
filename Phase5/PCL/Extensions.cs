@@ -46,9 +46,8 @@ namespace LazarAlexandruConstantin
             }
             catch(Exception e)
             {
-                MessageBox.Show($"Error: {e.GetType()}");
+                throw e;
             }
-            return null;
         }
 
         public static Project DeserializeFromString(this Project _, string text)

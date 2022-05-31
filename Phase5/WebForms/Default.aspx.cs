@@ -21,7 +21,8 @@ namespace WebForms
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallProjectInitialized", "ProjectInitialized()", true);
+            Debug.WriteLine("Page_load");
         }
 
         [System.Web.Services.WebMethod]
@@ -35,11 +36,14 @@ namespace WebForms
         public static string GetTasks()
         {
             List<TaskString> tasks = new List<TaskString>();
-            foreach ( var task in project.Tasks)
+            if (project != null)
             {
-                TaskString taskString = new TaskString();
-                SetProperties(taskString, task);
-                tasks.Add(taskString);
+                foreach (var task in project.Tasks)
+                {
+                    TaskString taskString = new TaskString();
+                    SetProperties(taskString, task);
+                    tasks.Add(taskString);
+                }
             }
             var json = JsonConvert.SerializeObject(tasks);
             return json;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Optimization;
@@ -16,6 +17,16 @@ namespace WebForms
             // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+        protected void Session_Start(object sender, EventArgs e)
+        {
+            Debug.WriteLine(DateTime.Now + " Session Started.");
+        }
+
+        protected void Session_End(object sender, EventArgs e)
+        {
+            Debug.WriteLine(DateTime.Now + " Session Started.");
         }
     }
 }
