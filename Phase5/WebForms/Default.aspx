@@ -45,6 +45,7 @@
 
     function QuitButtonClicked()
     {
+        PageMethods.Quit(function (result) { }, OnError);
         ReplaceBody();
     }
 

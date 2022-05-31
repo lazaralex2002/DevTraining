@@ -21,14 +21,27 @@ namespace WebForms
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallProjectInitialized", "ProjectInitialized()", true);
-            Debug.WriteLine("Page_load");
+            if (HttpContext.Current.Session["project"] != null )
+            {
+                project = (Project)HttpContext.Current.Session["project"];
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallProjectInitialized", "ProjectInitialized()", true);
+                Debug.WriteLine("Page_load");
+            }
+        }
+
+        [System.Web.Services.WebMethod]
+        public static bool Quit()
+        {
+            project = null;
+            HttpContext.Current.Session["project"] = project;
+            return true;
         }
 
         [System.Web.Services.WebMethod]
         public static string Initialize()
         {
             InitizeProject();
+            HttpContext.Current.Session["project"] = project;
             return project.Tasks.Count().ToString();
         }
 
@@ -55,6 +68,7 @@ namespace WebForms
             try
             {
                 project = project.DeserializeFromString(filePath);
+                HttpContext.Current.Session["project"] = project;
             }
             catch(FileNotFoundException)
             {
@@ -101,6 +115,7 @@ namespace WebForms
                     default:
                         break;
                 }
+                HttpContext.Current.Session["project"] = project ;
             }
             return result;
         }
@@ -126,37 +141,11 @@ namespace WebForms
             try
             {
                 project.Initialize(filePath);
+                HttpContext.Current.Session["project"] = project;
             }
             catch(Exception e )
             {  
                 throw e;
-            }
-        }
-
-        [System.Web.Services.WebMethod]
-        public static string GetCell(int rowIndex, int columnIndex)
-        {
-            rowIndex += 1;
-            switch(columnIndex)
-            {
-                case Columns.TaskID:
-                    return project.Tasks.GetTask(rowIndex).TaskID.ToString();
-                case Columns.TaskName:
-                    return project.Tasks.GetTask(rowIndex).Name;
-                case Columns.Duration:
-                    return project.Tasks.GetTask(rowIndex).Duration.ToString();
-                case Columns.Start:
-                    return project.Tasks.GetTask(rowIndex).Start.ToString();
-                case Columns.Finish:
-                    return project.Tasks.GetTask(rowIndex).Finish.ToString();
-                case Columns.Predecessors:
-                    return project.Tasks.GetTask(rowIndex).Predecessors.ContentToString();
-                case Columns.ResourceNames:
-                    return project.Tasks.GetTask(rowIndex).ResourceNames.ContentToString();
-                case Columns.TaskMode:
-                    return project.Tasks.GetTask(rowIndex).TaskMode.ToString();
-                default:
-                    return "undefined";
             }
         }
 

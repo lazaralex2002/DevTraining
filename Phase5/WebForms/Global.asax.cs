@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Builder;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace WebForms
 {
     public class Global : HttpApplication
     {
+
         void Application_Start(object sender, EventArgs e)
         {
             // Code that runs on application startup
@@ -21,12 +23,10 @@ namespace WebForms
 
         protected void Session_Start(object sender, EventArgs e)
         {
-            Debug.WriteLine(DateTime.Now + " Session Started.");
         }
 
         protected void Session_End(object sender, EventArgs e)
         {
-            Debug.WriteLine(DateTime.Now + " Session Started.");
         }
     }
 }
