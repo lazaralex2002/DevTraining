@@ -74,7 +74,11 @@ namespace LazarAlexandruConstantin
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem.
+                
+                
+                
+                Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.initializeToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.loadToolStripMenuItem,

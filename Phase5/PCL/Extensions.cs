@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace LazarAlexandruConstantin
@@ -36,35 +35,21 @@ namespace LazarAlexandruConstantin
 
         public static Project Deserialize(this Project _, string filename)
         {
-            try
-            {
-                var mySerializer = new XmlSerializer(typeof(Project));
-                var myFileStream = new FileStream(filename, FileMode.Open);
-                Project project = (Project)mySerializer.Deserialize(myFileStream);
-                myFileStream.Close();
-                return project;
-            }
-            catch(Exception e)
-            {
-                throw e;
-            }
+            var mySerializer = new XmlSerializer(typeof(Project));
+            var myFileStream = new FileStream(filename, FileMode.Open);
+            Project project = (Project)mySerializer.Deserialize(myFileStream);
+            myFileStream.Close();
+            return project;
         }
 
         public static Project DeserializeFromString(this Project _, string text)
         {
-            try
-            {
-                var mySerializer = new XmlSerializer(typeof(Project));
-                byte[] byteArray = Encoding.ASCII.GetBytes(text);
-                MemoryStream stream = new MemoryStream(byteArray);
-                Project project = (Project)mySerializer.Deserialize(stream);
-                stream.Close();
-                return project;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            var mySerializer = new XmlSerializer(typeof(Project));
+            byte[] byteArray = Encoding.ASCII.GetBytes(text);
+            MemoryStream stream = new MemoryStream(byteArray);
+            Project project = (Project)mySerializer.Deserialize(stream);
+            stream.Close();
+            return project;
         }
 
         public static string ContentToString(this HashSet<string> set)
@@ -149,7 +134,14 @@ namespace LazarAlexandruConstantin
                 case Columns.Duration:
                     if (value.IsInteger())
                     {
-
+                        try
+                        {
+                            var number = int.Parse(value);
+                        }
+                        catch
+                        {
+                            return false;
+                        }
                         return true;
                     }
                     else

@@ -127,6 +127,7 @@
 
     function GetTasksSuccess(result)
     {
+        console.log(result.toString());
         var projectObject = JSON.parse(result);
 
         projectObject.forEach(obj => {

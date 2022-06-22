@@ -17,38 +17,39 @@ namespace WebForms
 {
     public partial class _Default : Page
     {
-        private static Project project;
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (HttpContext.Current.Session["project"] != null )
+            if (HttpContext.Current.Session["project"] != null)
             {
-                project = (Project)HttpContext.Current.Session["project"];
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallProjectInitialized", "ProjectInitialized()", true);
                 Debug.WriteLine("Page_load");
             }
         }
 
-        [System.Web.Services.WebMethod]
+        [WebMethod(EnableSession = true)]
         public static bool Quit()
         {
-            project = null;
-            HttpContext.Current.Session["project"] = project;
+            HttpContext.Current.Session["project"] = null;
             return true;
         }
 
-        [System.Web.Services.WebMethod]
-        public static string Initialize()
+        private static Project GetProjectFromSession()
         {
-            InitizeProject();
-            HttpContext.Current.Session["project"] = project;
-            return project.Tasks.Count().ToString();
+            return (Project)HttpContext.Current.Session["project"];
         }
 
-        [System.Web.Services.WebMethod]
+        [WebMethod]
+        public static string Initialize()
+        {
+            InitializeProject();
+            return GetProjectFromSession().Tasks.Count().ToString();
+        }
+
+        [WebMethod]
         public static string GetTasks()
         {
             List<TaskString> tasks = new List<TaskString>();
+            var project = GetProjectFromSession();
             if (project != null)
             {
                 foreach (var task in project.Tasks)
@@ -62,9 +63,10 @@ namespace WebForms
             return json;
         }
 
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static bool Deserialize(string filePath)
         {
+            var project = GetProjectFromSession();
             try
             {
                 project = project.DeserializeFromString(filePath);
@@ -81,15 +83,16 @@ namespace WebForms
             return true;
         }
 
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static string Serialize()
         {
-            return project.SerializeToString();
+            return GetProjectFromSession().SerializeToString();
         }
 
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static bool UpdateField(string rowindex, int colindex, string value)
         {
+            var project = GetProjectFromSession();
             bool result = Extensions.Validate(colindex, value);
             if (result == true)
             {
@@ -110,7 +113,7 @@ namespace WebForms
                         break;
                     case Columns.Finish:
                         dateTime = DateTime.ParseExact(value.Trim(), "M/dd/yyyy hh:mm:ss tt", null);
-                        task.Start = dateTime;
+                        task.Finish = dateTime;
                         break;
                     default:
                         break;
@@ -132,33 +135,14 @@ namespace WebForms
             taskString.TaskMode = task.TaskMode.ToString();
         }
 
-        private static void InitizeProject()
+        private static void InitializeProject()
         {
-            project = new Project();
             string fileName=  "input.txt";
             string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
             Debug.WriteLine(filePath);
-            try
-            {
-                project.Initialize(filePath);
-                HttpContext.Current.Session["project"] = project;
-            }
-            catch(Exception e )
-            {  
-                throw e;
-            }
-        }
-
-        public class TaskString
-        {
-            public string TaskID { get; set; }
-            public string Duration { get; set; }
-            public string TaskName { get; set; }
-            public string Start { get; set; }
-            public string Finish { get; set; }
-            public string Predecessors { get; set; }
-            public string ResourceNames { get; set; }
-            public string TaskMode { get; set; }
+            var project = new Project();
+            project.Initialize(filePath);
+            HttpContext.Current.Session["project"] = project;
         }
     }
 }
