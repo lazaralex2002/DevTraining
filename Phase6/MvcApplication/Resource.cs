@@ -14,8 +14,17 @@ namespace MvcApplication
     
     public partial class Resource
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Resource()
+        {
+            this.ResourceTasks = new HashSet<ResourceTask>();
+        }
+    
         public int ResourceId { get; set; }
         public string ResourceName { get; set; }
         public Nullable<decimal> ResourceRate { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ResourceTask> ResourceTasks { get; set; }
     }
 }

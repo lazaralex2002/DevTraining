@@ -4,11 +4,17 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="13092fe0de7149d7a0d637d675c89b1d" Name="Diagram1">
-        <EntityTypeShape EntityType="TaskManagementModel.Project" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="TaskManagementModel.Resource" Width="1.5" PointX="2.875" PointY="4.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="TaskManagementModel.Task" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+      <Diagram DiagramId="3a197a19b81f4f518d0886c5721fed1d" Name="Diagram1">
+        <EntityTypeShape EntityType="TaskManagementModel.Project" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskManagementModel.Resource" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskManagementModel.ResourceTask" Width="1.5" PointX="5.25" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskManagementModel.Task" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TaskManagementModel.TaskPredecessor" Width="1.5" PointX="5.25" PointY="5.125" IsExpanded="true" />
         <AssociationConnector Association="TaskManagementModel.FK__Task__ProjectId__276EDEB3" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskManagementModel.FK__ResourceT__Resou__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskManagementModel.FK__ResourceT__TaskI__35BCFE0A" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskManagementModel.FK__TaskPrede__Prede__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskManagementModel.FK__TaskPrede__TaskI__38996AB5" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

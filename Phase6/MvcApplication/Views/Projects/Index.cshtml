@@ -1,0 +1,54 @@
+﻿@using MvcApplication
+@using System.Web
+
+@model IEnumerable<Project>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ProjectId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ProjectId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ProjectId }) |
+                @{
+                    if (System.Web.HttpContext.Current.Session["Project"] != null && System.Web.HttpContext.Current.Session["Project"].ToString() == item.ProjectId.ToString())
+                    {
+                        @Html.ActionLink("Unchoose", "Unchoose", new { id = item.ProjectId });
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Choose", "Choose", new { id = item.ProjectId });
+                    }
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+@{
+    if (ViewBag.ChooseProject == 1)
+    {
+        <div class="bar error">In order to access Tasks please choose a project first</div>
+    }
+}

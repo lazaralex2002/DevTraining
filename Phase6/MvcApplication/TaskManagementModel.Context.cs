@@ -27,6 +27,8 @@ namespace MvcApplication
     
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<Resource> Resources { get; set; }
+        public virtual DbSet<ResourceTask> ResourceTasks { get; set; }
         public virtual DbSet<Task> Tasks { get; set; }
+        public virtual DbSet<TaskPredecessor> TaskPredecessors { get; set; }
     }
 }

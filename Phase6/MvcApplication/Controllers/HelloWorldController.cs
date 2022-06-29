@@ -15,7 +15,7 @@ namespace MvcMovie.Controllers
             using (var context = new TaskManagementEntities1())
             {
                 var query = context.Tasks
-                       .Where(s => s.TaskID == 1)
+                       .Where(s => s.TaskId == 1)
                        .FirstOrDefault<Task>();
                 if (query != null)
                     ViewBag.Name = query.Name;

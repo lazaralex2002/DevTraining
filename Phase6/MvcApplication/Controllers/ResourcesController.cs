@@ -10,119 +10,107 @@ using MvcApplication;
 
 namespace MvcApplication.Controllers
 {
-    public class TasksController : Controller
+    public class ResourcesController : Controller
     {
         private TaskManagementEntities1 db = new TaskManagementEntities1();
 
-        // GET: Tasks
+        // GET: Resources
         public ActionResult Index()
         {
-            if(HttpContext.Session["Project"] == null )
-            {
-                return Redirect("/Projects/ChooseProject");
-            }
-            else
-            {
-                var tasks = db.Tasks.Include(t => t.Project);
-                return View(tasks.ToList());
-            }
+            return View(db.Resources.ToList());
         }
 
-        // GET: Tasks/Details/5
+        // GET: Resources/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Task task = db.Tasks.Find(id);
-            if (task == null)
+            Resource resource = db.Resources.Find(id);
+            if (resource == null)
             {
                 return HttpNotFound();
             }
-            return View(task);
+            return View(resource);
         }
 
-        // GET: Tasks/Create
+        // GET: Resources/Create
         public ActionResult Create()
         {
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName");
             return View();
         }
 
-        // POST: Tasks/Create
+        // POST: Resources/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TaskId,Name,Duration,Start,Finish,TaskMode,ProjectId")] Task task)
+        public ActionResult Create([Bind(Include = "ResourceId,ResourceName,ResourceRate")] Resource resource)
         {
             if (ModelState.IsValid)
             {
-                db.Tasks.Add(task);
+                db.Resources.Add(resource);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName", task.ProjectId);
-            return View(task);
+            return View(resource);
         }
 
-        // GET: Tasks/Edit/5
+        // GET: Resources/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Task task = db.Tasks.Find(id);
-            if (task == null)
+            Resource resource = db.Resources.Find(id);
+            if (resource == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName", task.ProjectId);
-            return View(task);
+            return View(resource);
         }
 
-        // POST: Tasks/Edit/5
+        // POST: Resources/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TaskId,Name,Duration,Start,Finish,TaskMode,ProjectId")] Task task)
+        public ActionResult Edit([Bind(Include = "ResourceId,ResourceName,ResourceRate")] Resource resource)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(task).State = EntityState.Modified;
+                db.Entry(resource).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName", task.ProjectId);
-            return View(task);
+            return View(resource);
         }
 
-        // GET: Tasks/Delete/5
+        // GET: Resources/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Task task = db.Tasks.Find(id);
-            if (task == null)
+            Resource resource = db.Resources.Find(id);
+            if (resource == null)
             {
                 return HttpNotFound();
             }
-            return View(task);
+            return View(resource);
         }
 
-        // POST: Tasks/Delete/5
+        // POST: Resources/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Task task = db.Tasks.Find(id);
-            db.Tasks.Remove(task);
+            Resource resource = db.Resources.Find(id);
+            db.Resources.Remove(resource);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
