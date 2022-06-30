@@ -33,7 +33,19 @@
             <td>
             </td>
             <td>
-                @Html.ActionLink("Delete", "Delete", new { id = resource.ResourceId })
+                @{
+                    int realtionId = 0;
+                    foreach (var relation in ViewBag.TaskResources)
+                    {
+                        if(relation.ResourceId == resource.ResourceId && relation.TaskId == Model.TaskId )
+                        {
+                            realtionId = relation.RelationshipId;
+                        }
+                    }
+                    @Html.ActionLink("Delete", "DeassignResource", new { id = realtionId })
+                }
+
+
             </td>
         </tr>
     }
@@ -48,6 +60,7 @@
                 <option value=" @res.ResourceId "> @res.ResourceName </option>
             }
         </select>
+        <input type='hidden' name='taskId' value=@Model.TaskId />
         <input type="submit" value="Submit" class="btn btn-default">
     </form>
 </div>

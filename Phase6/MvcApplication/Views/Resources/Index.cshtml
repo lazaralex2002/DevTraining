@@ -30,9 +30,10 @@
             @Html.DisplayFor(modelItem => item.ResourceRate)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ResourceId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ResourceId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ResourceId })
+            @Html.ActionLink("Edit", "Edit", new { id = item.ResourceId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.ResourceId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ResourceId }) |
+            @Html.ActionLink("View Tasks", "ViewTasks", new { id = item.ResourceId })
         </td>
     </tr>
 }

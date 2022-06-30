@@ -22,13 +22,6 @@ namespace MvcApplication.Controllers
             return View(db.Projects.ToList());
         }
 
-        // GET: Projects/ChooseProject
-        public ActionResult ChooseProject()
-        {
-            ViewBag.ChooseProject = 1;
-            ViewBag.ProjectCost = db.GetProjectCost().ToList();
-            return View("~/Views/Projects/Index.cshtml", db.Projects.ToList());
-        }
 
         // GET: Projects/Details/5
         public ActionResult Details(int? id)
@@ -124,7 +117,7 @@ namespace MvcApplication.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+        /*
         // GET: Projects/Choose/5
         public ActionResult Choose(int? id)
         {
@@ -172,8 +165,15 @@ namespace MvcApplication.Controllers
             HttpContext.Session["Project"] = null;
             return RedirectToAction("Index");
         }
-
-
+        */
+        /*
+        // GET: Projects/ChooseProject
+        public ActionResult ChooseProject()
+        {
+            ViewBag.ChooseProject = 1;
+            ViewBag.ProjectCost = db.GetProjectCost().ToList();
+            return View("~/Views/Projects/Index.cshtml", db.Projects.ToList());
+        }*/
         protected override void Dispose(bool disposing)
         {
             if (disposing)

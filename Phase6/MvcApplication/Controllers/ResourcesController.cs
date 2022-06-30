@@ -73,6 +73,35 @@ namespace MvcApplication.Controllers
             return View(resource);
         }
 
+        // GET: Resources/ViewTasks/5
+        public ActionResult ViewTasks(int? id)
+        {
+            var ResourceTasks = db.ResourceTasks.Where(rt => rt.ResourceId == id).ToList();
+            var TaskList = db.Tasks.ToList();
+            var Tasks = new List<Task>();
+            foreach (var relation in ResourceTasks)
+            {
+                foreach (var task in TaskList)
+                {
+                    if (relation.TaskId == task.TaskId)
+                    {
+                        Tasks.Add(task);
+                    }
+                }
+            }
+            ViewBag.Tasks = Tasks;
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Resource resource = db.Resources.Find(id);
+            if (resource == null)
+            {
+                return HttpNotFound();
+            }
+            return View(resource);
+        }
+
         // POST: Resources/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.

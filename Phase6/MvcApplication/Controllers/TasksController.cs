@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using MvcApplication;
@@ -54,10 +56,23 @@ namespace MvcApplication.Controllers
                 return View(tasks.ToList());
             }
         }
+
+        // POST: Tasks/AssignResource/5
+        [HttpPost]
+        public ActionResult AssignResource(int resource, int taskId)
+        {
+            var entity = new ResourceTask();
+            entity.ResourceId = resource;
+            entity.TaskId = taskId;
+            db.ResourceTasks.Add(entity);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         // GET: Tasks/AssignResource/5
         public ActionResult AssignResource(int? id)
         {
-    
+     
             var TaskResources = db.ResourceTasks.Where(rt => rt.TaskId == id).ToList();
             var ResourceList = db.Resources.ToList();
             var ResourcesThatCanBeAssigned = new List<Resource>();
@@ -80,6 +95,7 @@ namespace MvcApplication.Controllers
             }
             ViewBag.AssignedResources = AssignedResources;
             ViewBag.ResourcesThatCanBeAssigned = ResourcesThatCanBeAssigned;
+            ViewBag.TaskResources = TaskResources;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -215,6 +231,31 @@ namespace MvcApplication.Controllers
             db.Tasks.Remove(task);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // POST: Tasks/DeassignResource/5
+        [HttpPost, ActionName("DeassignResource")]
+        public ActionResult DeassignResource(int id)
+        {
+            ResourceTask resourceTask = db.ResourceTasks.Find(id);
+            db.ResourceTasks.Remove(resourceTask);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        // GET: Tasks/DeassignResource/5
+        public ActionResult DeassignResource(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ResourceTask resourceTask = db.ResourceTasks.Find(id);
+            if (resourceTask == null)
+            {
+                return HttpNotFound();
+            }
+            return View(resourceTask);
         }
 
         protected override void Dispose(bool disposing)
