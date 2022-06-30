@@ -12,14 +12,14 @@ namespace MvcApplication.Controllers
 {
     public class ProjectsController : Controller
     {
-        private TaskManagementEntities db = new TaskManagementEntities();
+        private TaskManagementEntities taskManagementEntities = new TaskManagementEntities();
 
         // GET: Projects
         public ActionResult Index()
         {
             ViewBag.ChooseProject = 0;
-            ViewBag.ProjectCost = db.GetProjectCost().ToList();
-            return View(db.Projects.ToList());
+            ViewBag.ProjectCost = taskManagementEntities.GetProjectCost().ToList();
+            return View(taskManagementEntities.Projects.ToList());
         }
 
 
@@ -30,7 +30,7 @@ namespace MvcApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
+            Project project = taskManagementEntities.Projects.Find(id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -53,8 +53,8 @@ namespace MvcApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Projects.Add(project);
-                db.SaveChanges();
+                taskManagementEntities.Projects.Add(project);
+                taskManagementEntities.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -68,7 +68,7 @@ namespace MvcApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
+            Project project = taskManagementEntities.Projects.Find(id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -85,8 +85,8 @@ namespace MvcApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(project).State = EntityState.Modified;
-                db.SaveChanges();
+                taskManagementEntities.Entry(project).State = EntityState.Modified;
+                taskManagementEntities.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(project);
@@ -99,7 +99,7 @@ namespace MvcApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
+            Project project = taskManagementEntities.Projects.Find(id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -112,9 +112,9 @@ namespace MvcApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Project project = db.Projects.Find(id);
-            db.Projects.Remove(project);
-            db.SaveChanges();
+            Project project = taskManagementEntities.Projects.Find(id);
+            taskManagementEntities.Projects.Remove(project);
+            taskManagementEntities.SaveChanges();
             return RedirectToAction("Index");
         }
         /*
@@ -178,7 +178,7 @@ namespace MvcApplication.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                taskManagementEntities.Dispose();
             }
             base.Dispose(disposing);
         }

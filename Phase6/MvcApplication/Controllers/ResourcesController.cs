@@ -12,12 +12,12 @@ namespace MvcApplication.Controllers
 {
     public class ResourcesController : Controller
     {
-        private TaskManagementEntities db = new TaskManagementEntities();
+        private TaskManagementEntities taskManagementEntities = new TaskManagementEntities();
 
         // GET: Resources
         public ActionResult Index()
         {
-            return View(db.Resources.ToList());
+            return View(taskManagementEntities.Resources.ToList());
         }
 
         // GET: Resources/Details/5
@@ -27,7 +27,7 @@ namespace MvcApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Resource resource = db.Resources.Find(id);
+            Resource resource = taskManagementEntities.Resources.Find(id);
             if (resource == null)
             {
                 return HttpNotFound();
@@ -50,8 +50,8 @@ namespace MvcApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Resources.Add(resource);
-                db.SaveChanges();
+                taskManagementEntities.Resources.Add(resource);
+                taskManagementEntities.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +65,7 @@ namespace MvcApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Resource resource = db.Resources.Find(id);
+            Resource resource = taskManagementEntities.Resources.Find(id);
             if (resource == null)
             {
                 return HttpNotFound();
@@ -76,8 +76,8 @@ namespace MvcApplication.Controllers
         // GET: Resources/ViewTasks/5
         public ActionResult ViewTasks(int? id)
         {
-            var ResourceTasks = db.ResourceTasks.Where(rt => rt.ResourceId == id).ToList();
-            var TaskList = db.Tasks.ToList();
+            var ResourceTasks = taskManagementEntities.ResourceTasks.Where(rt => rt.ResourceId == id).ToList();
+            var TaskList = taskManagementEntities.Tasks.ToList();
             var Tasks = new List<Task>();
             foreach (var relation in ResourceTasks)
             {
@@ -94,7 +94,7 @@ namespace MvcApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Resource resource = db.Resources.Find(id);
+            Resource resource = taskManagementEntities.Resources.Find(id);
             if (resource == null)
             {
                 return HttpNotFound();
@@ -111,8 +111,8 @@ namespace MvcApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(resource).State = EntityState.Modified;
-                db.SaveChanges();
+                taskManagementEntities.Entry(resource).State = EntityState.Modified;
+                taskManagementEntities.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(resource);
@@ -125,7 +125,7 @@ namespace MvcApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Resource resource = db.Resources.Find(id);
+            Resource resource = taskManagementEntities.Resources.Find(id);
             if (resource == null)
             {
                 return HttpNotFound();
@@ -138,9 +138,9 @@ namespace MvcApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Resource resource = db.Resources.Find(id);
-            db.Resources.Remove(resource);
-            db.SaveChanges();
+            Resource resource = taskManagementEntities.Resources.Find(id);
+            taskManagementEntities.Resources.Remove(resource);
+            taskManagementEntities.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -148,7 +148,7 @@ namespace MvcApplication.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                taskManagementEntities.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -14,7 +14,7 @@ namespace MvcApplication.Controllers
 {
     public class TasksController : Controller
     {
-        private TaskManagementEntities db = new TaskManagementEntities();
+        private TaskManagementEntities taskManagementEntities = new TaskManagementEntities();
         // GET: Tasks
         /*
         public ActionResult Index()
@@ -35,8 +35,8 @@ namespace MvcApplication.Controllers
 
         public ActionResult Index(string project)
         {
-            ViewBag.TaskCost = db.GetTaskCost().ToList();
-            ViewBag.Projects = db.Projects.ToList();
+            ViewBag.TaskCost = taskManagementEntities.GetTaskCost().ToList();
+            ViewBag.Projects = taskManagementEntities.Projects.ToList();
             if (HttpContext.Session["Project"] != null)
             {
                 var proj = int.Parse(HttpContext.Session["Project"].ToString());
@@ -45,14 +45,14 @@ namespace MvcApplication.Controllers
             project = Request.QueryString["project"];
             if (project == null || project == "")
             {
-                var tasks = db.Tasks.Include(t => t.Project);
+                var tasks = taskManagementEntities.Tasks.Include(t => t.Project);
                 return View(tasks.ToList());
             }
             else
             {
-                ViewBag.TaskCost = db.GetTaskCost().ToList();
+                ViewBag.TaskCost = taskManagementEntities.GetTaskCost().ToList();
                 var proj = int.Parse(project);
-                var tasks = db.Tasks.Include(t => t.Project).Where(t => t.ProjectId == proj);
+                var tasks = taskManagementEntities.Tasks.Include(t => t.Project).Where(t => t.ProjectId == proj);
                 return View(tasks.ToList());
             }
         }
@@ -64,8 +64,8 @@ namespace MvcApplication.Controllers
             var entity = new ResourceTask();
             entity.ResourceId = resource;
             entity.TaskId = taskId;
-            db.ResourceTasks.Add(entity);
-            db.SaveChanges();
+            taskManagementEntities.ResourceTasks.Add(entity);
+            taskManagementEntities.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -73,8 +73,8 @@ namespace MvcApplication.Controllers
         public ActionResult AssignResource(int? id)
         {
      
-            var TaskResources = db.ResourceTasks.Where(rt => rt.TaskId == id).ToList();
-            var ResourceList = db.Resources.ToList();
+            var TaskResources = taskManagementEntities.ResourceTasks.Where(rt => rt.TaskId == id).ToList();
+            var ResourceList = taskManagementEntities.Resources.ToList();
             var ResourcesThatCanBeAssigned = new List<Resource>();
             var AssignedResources = new List<Resource>();
             foreach (var resource in ResourceList)
@@ -100,7 +100,7 @@ namespace MvcApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Task task = db.Tasks.Find(id);
+            Task task = taskManagementEntities.Tasks.Find(id);
             if (task == null)
             {
                 return HttpNotFound();
@@ -111,11 +111,11 @@ namespace MvcApplication.Controllers
         // GET: Tasks/ViewResources/5
         public ActionResult ViewResources(int? id)
         {
-            var TaskResources = db.ResourceTasks.Where(rt => rt.TaskId == id).ToList();
+            var TaskResources = taskManagementEntities.ResourceTasks.Where(rt => rt.TaskId == id).ToList();
             var ResourceList = new List<Resource>();
             foreach (var taskResource in TaskResources)
             {
-                var result = db.Resources.Where(res => res.ResourceId == taskResource.ResourceId);
+                var result = taskManagementEntities.Resources.Where(res => res.ResourceId == taskResource.ResourceId);
                 if (result != null)
                 {
                     ResourceList.Add(result.First());
@@ -126,7 +126,7 @@ namespace MvcApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Task task = db.Tasks.Find(id);
+            Task task = taskManagementEntities.Tasks.Find(id);
             if (task == null)
             {
                 return HttpNotFound();
@@ -141,7 +141,7 @@ namespace MvcApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Task task = db.Tasks.Find(id);
+            Task task = taskManagementEntities.Tasks.Find(id);
             if (task == null)
             {
                 return HttpNotFound();
@@ -152,7 +152,7 @@ namespace MvcApplication.Controllers
         // GET: Tasks/Create
         public ActionResult Create()
         {
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName");
+            ViewBag.ProjectId = new SelectList(taskManagementEntities.Projects, "ProjectId", "ProjectName");
             return View();
         }
 
@@ -165,12 +165,12 @@ namespace MvcApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Tasks.Add(task);
-                db.SaveChanges();
+                taskManagementEntities.Tasks.Add(task);
+                taskManagementEntities.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName", task.ProjectId);
+            ViewBag.ProjectId = new SelectList(taskManagementEntities.Projects, "ProjectId", "ProjectName", task.ProjectId);
             return View(task);
         }
 
@@ -181,12 +181,12 @@ namespace MvcApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Task task = db.Tasks.Find(id);
+            Task task = taskManagementEntities.Tasks.Find(id);
             if (task == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName", task.ProjectId);
+            ViewBag.ProjectId = new SelectList(taskManagementEntities.Projects, "ProjectId", "ProjectName", task.ProjectId);
             return View(task);
         }
 
@@ -199,11 +199,11 @@ namespace MvcApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(task).State = EntityState.Modified;
-                db.SaveChanges();
+                taskManagementEntities.Entry(task).State = EntityState.Modified;
+                taskManagementEntities.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "ProjectName", task.ProjectId);
+            ViewBag.ProjectId = new SelectList(taskManagementEntities.Projects, "ProjectId", "ProjectName", task.ProjectId);
             return View(task);
         }
 
@@ -214,7 +214,7 @@ namespace MvcApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Task task = db.Tasks.Find(id);
+            Task task = taskManagementEntities.Tasks.Find(id);
             if (task == null)
             {
                 return HttpNotFound();
@@ -227,9 +227,9 @@ namespace MvcApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Task task = db.Tasks.Find(id);
-            db.Tasks.Remove(task);
-            db.SaveChanges();
+            Task task = taskManagementEntities.Tasks.Find(id);
+            taskManagementEntities.Tasks.Remove(task);
+            taskManagementEntities.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -237,9 +237,9 @@ namespace MvcApplication.Controllers
         [HttpPost, ActionName("DeassignResource")]
         public ActionResult DeassignResource(int id)
         {
-            ResourceTask resourceTask = db.ResourceTasks.Find(id);
-            db.ResourceTasks.Remove(resourceTask);
-            db.SaveChanges();
+            ResourceTask resourceTask = taskManagementEntities.ResourceTasks.Find(id);
+            taskManagementEntities.ResourceTasks.Remove(resourceTask);
+            taskManagementEntities.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -250,7 +250,7 @@ namespace MvcApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ResourceTask resourceTask = db.ResourceTasks.Find(id);
+            ResourceTask resourceTask = taskManagementEntities.ResourceTasks.Find(id);
             if (resourceTask == null)
             {
                 return HttpNotFound();
@@ -262,7 +262,7 @@ namespace MvcApplication.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                taskManagementEntities.Dispose();
             }
             base.Dispose(disposing);
         }
