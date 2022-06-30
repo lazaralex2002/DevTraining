@@ -11,8 +11,7 @@ namespace MvcApplication
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Task
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,15 +23,9 @@ namespace MvcApplication
         }
     
         public int TaskId { get; set; }
-
-        [StringLength(30)]
         public string Name { get; set; }
         public Nullable<decimal> Duration { get; set; }
-
-        [DataType(DataType.DateTime)]
         public Nullable<System.DateTime> Start { get; set; }
-
-        [DataType(DataType.DateTime)]
         public Nullable<System.DateTime> Finish { get; set; }
         public Nullable<int> TaskMode { get; set; }
         public int ProjectId { get; set; }

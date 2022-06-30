@@ -136,6 +136,9 @@
     <Compile Include="GetProjectCost_Result.cs">
       <DependentUpon>TaskManagementModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="GetResourceTaskDetails_Result.cs">
+      <DependentUpon>TaskManagementModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="GetTaskCost_Result.cs">
       <DependentUpon>TaskManagementModel.tt</DependentUpon>
     </Compile>
@@ -162,13 +165,13 @@
       <DependentUpon>TaskManagementModel.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="TaskManagementModel.cs">
-      <DependentUpon>TaskManagementModel.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TaskManagementModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TaskManagementModel.Designer.cs">
-      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>TaskManagementModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="TaskPredecessor.cs">
@@ -202,13 +205,10 @@
       <DependentUpon>TaskManagementModel.edmx</DependentUpon>
       <LastGenOutput>TaskManagementModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="TaskManagementModel.edmx.diagram">
-      <DependentUpon>TaskManagementModel.edmx</DependentUpon>
-    </Content>
     <Content Include="TaskManagementModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TaskManagementModel.cs</LastGenOutput>
       <DependentUpon>TaskManagementModel.edmx</DependentUpon>
+      <LastGenOutput>TaskManagementModel.cs</LastGenOutput>
     </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -225,11 +225,25 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\HelloWorld\Index.cshtml" />
+    <Content Include="Views\Resources Template\Create.cshtml" />
+    <Content Include="Views\Resources Template\Delete.cshtml" />
+    <Content Include="Views\Resources Template\Details.cshtml" />
+    <Content Include="Views\Resources Template\Edit.cshtml" />
+    <Content Include="Views\Resources Template\Index.cshtml" />
+    <Content Include="Views\Projects\Choose.cshtml" />
+    <Content Include="Views\Projects\Unchoose.cshtml" />
     <Content Include="Views\Tasks\Create.cshtml" />
     <Content Include="Views\Tasks\Delete.cshtml" />
     <Content Include="Views\Tasks\Details.cshtml" />
     <Content Include="Views\Tasks\Edit.cshtml" />
     <Content Include="Views\Tasks\Index.cshtml" />
+    <EntityDeploy Include="TaskManagementModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TaskManagementModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="TaskManagementModel.edmx.diagram">
+      <DependentUpon>TaskManagementModel.edmx</DependentUpon>
+    </Content>
     <Content Include="Views\Projects\Create.cshtml" />
     <Content Include="Views\Projects\Delete.cshtml" />
     <Content Include="Views\Projects\Details.cshtml" />
@@ -240,12 +254,8 @@
     <Content Include="Views\Resources\Details.cshtml" />
     <Content Include="Views\Resources\Edit.cshtml" />
     <Content Include="Views\Resources\Index.cshtml" />
-    <Content Include="Views\Projects\Choose.cshtml" />
-    <Content Include="Views\Projects\Unchoose.cshtml" />
-    <EntityDeploy Include="TaskManagementModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>TaskManagementModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
+    <Content Include="Views\Tasks\AssignResource.cshtml" />
+    <Content Include="Views\Tasks\ViewResources.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

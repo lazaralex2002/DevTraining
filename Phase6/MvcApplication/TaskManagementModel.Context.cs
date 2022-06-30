@@ -15,10 +15,10 @@ namespace MvcApplication
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class TaskManagementEntities1 : DbContext
+    public partial class TaskManagementEntities : DbContext
     {
-        public TaskManagementEntities1()
-            : base("name=TaskManagementEntities1")
+        public TaskManagementEntities()
+            : base("name=TaskManagementEntities")
         {
         }
     
@@ -41,6 +41,11 @@ namespace MvcApplication
         public virtual ObjectResult<GetTaskCost_Result> GetTaskCost()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTaskCost_Result>("GetTaskCost");
+        }
+    
+        public virtual ObjectResult<GetResourceTaskDetails_Result> GetResourceTaskDetails()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetResourceTaskDetails_Result>("GetResourceTaskDetails");
         }
     }
 }

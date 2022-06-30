@@ -6,14 +6,14 @@ namespace MvcApplication.Migrations
     using System.Linq;
     using static MvcApplication;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<TaskManagementEntities1>
+    internal sealed class Configuration : DbMigrationsConfiguration<TaskManagementEntities>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(TaskManagementEntities1 context)
+        protected override void Seed(TaskManagementEntities context)
         {
             //  This method will be called after migrating to the latest version.
 

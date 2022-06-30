@@ -12,7 +12,7 @@ namespace MvcApplication.Controllers
 {
     public class ProjectsController : Controller
     {
-        private TaskManagementEntities1 db = new TaskManagementEntities1();
+        private TaskManagementEntities db = new TaskManagementEntities();
 
         // GET: Projects
         public ActionResult Index()

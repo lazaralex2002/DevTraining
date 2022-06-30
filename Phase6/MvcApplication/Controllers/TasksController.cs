@@ -12,22 +12,110 @@ namespace MvcApplication.Controllers
 {
     public class TasksController : Controller
     {
-        private TaskManagementEntities1 db = new TaskManagementEntities1();
-
+        private TaskManagementEntities db = new TaskManagementEntities();
         // GET: Tasks
+        /*
         public ActionResult Index()
         {
-            if(HttpContext.Session["Project"] == null )  
+            if (HttpContext.Session["Project"] == null)
             {
                 return Redirect("/Projects/ChooseProject");
             }
             else
             {
                 ViewBag.TaskCost = db.GetTaskCost().ToList();
-                var proj = int.Parse( HttpContext.Session["Project"].ToString());
-                var tasks = db.Tasks.Include(t => t.Project).Where(t => t.ProjectId == proj );
+                var proj = int.Parse(HttpContext.Session["Project"].ToString());
+                var tasks = db.Tasks.Include(t => t.Project).Where(t => t.ProjectId == proj);
                 return View(tasks.ToList());
             }
+        }
+        */
+
+        public ActionResult Index(string project)
+        {
+            ViewBag.TaskCost = db.GetTaskCost().ToList();
+            ViewBag.Projects = db.Projects.ToList();
+            if (HttpContext.Session["Project"] != null)
+            {
+                var proj = int.Parse(HttpContext.Session["Project"].ToString());
+                Redirect("/Tasks/?project=" + proj.ToString());
+            }
+            project = Request.QueryString["project"];
+            if (project == null || project == "")
+            {
+                var tasks = db.Tasks.Include(t => t.Project);
+                return View(tasks.ToList());
+            }
+            else
+            {
+                ViewBag.TaskCost = db.GetTaskCost().ToList();
+                var proj = int.Parse(project);
+                var tasks = db.Tasks.Include(t => t.Project).Where(t => t.ProjectId == proj);
+                return View(tasks.ToList());
+            }
+        }
+        // GET: Tasks/AssignResource/5
+        public ActionResult AssignResource(int? id)
+        {
+    
+            var TaskResources = db.ResourceTasks.Where(rt => rt.TaskId == id).ToList();
+            var ResourceList = db.Resources.ToList();
+            var ResourcesThatCanBeAssigned = new List<Resource>();
+            var AssignedResources = new List<Resource>();
+            foreach (var resource in ResourceList)
+            {
+                bool ok = true;
+                foreach(var taskResource in TaskResources)
+                {
+                    if (resource.ResourceId == taskResource.ResourceId) ok = false;
+                }
+                if(ok == true)
+                {
+                    ResourcesThatCanBeAssigned.Add(resource);
+                }
+                else
+                {
+                    AssignedResources.Add(resource);
+                }
+            }
+            ViewBag.AssignedResources = AssignedResources;
+            ViewBag.ResourcesThatCanBeAssigned = ResourcesThatCanBeAssigned;
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Task task = db.Tasks.Find(id);
+            if (task == null)
+            {
+                return HttpNotFound();
+            }
+            return View(task);
+        }
+
+        // GET: Tasks/ViewResources/5
+        public ActionResult ViewResources(int? id)
+        {
+            var TaskResources = db.ResourceTasks.Where(rt => rt.TaskId == id).ToList();
+            var ResourceList = new List<Resource>();
+            foreach (var taskResource in TaskResources)
+            {
+                var result = db.Resources.Where(res => res.ResourceId == taskResource.ResourceId);
+                if (result != null)
+                {
+                    ResourceList.Add(result.First());
+                }
+            }
+            ViewBag.Resources = ResourceList;
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Task task = db.Tasks.Find(id);
+            if (task == null)
+            {
+                return HttpNotFound();
+            }
+            return View(task);
         }
 
         // GET: Tasks/Details/5

@@ -12,7 +12,7 @@ namespace MvcMovie.Controllers
 
         public ActionResult Index()
         {
-            using (var context = new TaskManagementEntities1())
+            using (var context = new TaskManagementEntities())
             {
                 var query = context.Tasks
                        .Where(s => s.TaskId == 1)
