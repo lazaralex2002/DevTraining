@@ -133,6 +133,12 @@
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\ResourcesController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
+    <Compile Include="GetProjectCost_Result.cs">
+      <DependentUpon>TaskManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetTaskCost_Result.cs">
+      <DependentUpon>TaskManagementModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

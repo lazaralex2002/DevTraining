@@ -17,6 +17,7 @@
         <th>
             @Html.DisplayNameFor(model => model.ProjectName)
         </th>
+        <th>Project Cost</th>
         <th></th>
     </tr>
 
@@ -25,6 +26,15 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ProjectName)
+            </td>
+            <td>
+                @foreach (var row in ViewBag.ProjectCost)
+                {
+                    if(row.ProjectId == item.ProjectId)
+                    {
+                        @row.ProjectCost
+                    }
+                }
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ProjectId }) |
@@ -45,10 +55,12 @@
     }
 
 </table>
+
 <br />
 @{
     if (ViewBag.ChooseProject == 1)
     {
         <div class="bar error">In order to access Tasks please choose a project first</div>
+
     }
 }

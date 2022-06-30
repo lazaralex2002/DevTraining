@@ -17,13 +17,15 @@ namespace MvcApplication.Controllers
         // GET: Tasks
         public ActionResult Index()
         {
-            if(HttpContext.Session["Project"] == null )
+            if(HttpContext.Session["Project"] == null )  
             {
                 return Redirect("/Projects/ChooseProject");
             }
             else
             {
-                var tasks = db.Tasks.Include(t => t.Project);
+                ViewBag.TaskCost = db.GetTaskCost().ToList();
+                var proj = int.Parse( HttpContext.Session["Project"].ToString());
+                var tasks = db.Tasks.Include(t => t.Project).Where(t => t.ProjectId == proj );
                 return View(tasks.ToList());
             }
         }

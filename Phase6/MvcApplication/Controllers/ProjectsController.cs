@@ -18,6 +18,7 @@ namespace MvcApplication.Controllers
         public ActionResult Index()
         {
             ViewBag.ChooseProject = 0;
+            ViewBag.ProjectCost = db.GetProjectCost().ToList();
             return View(db.Projects.ToList());
         }
 
@@ -25,6 +26,7 @@ namespace MvcApplication.Controllers
         public ActionResult ChooseProject()
         {
             ViewBag.ChooseProject = 1;
+            ViewBag.ProjectCost = db.GetProjectCost().ToList();
             return View("~/Views/Projects/Index.cshtml", db.Projects.ToList());
         }
 

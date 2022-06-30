@@ -8,4 +8,7 @@ INSERT INTO ResourceTask (RelationshipId,ResourceId, TaskId) values
 (6, 3, 7),
 (7, 3, 8),
 (8, 3, 9),
-(9, 3, 10);
+(9, 3, 10),
+(10, 2, 1),
+(11, 2, 2 ),
+(12, 3, 1 );

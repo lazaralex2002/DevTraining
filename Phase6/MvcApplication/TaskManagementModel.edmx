@@ -116,6 +116,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetProjectCost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetTaskCost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="TaskManagementModelStoreContainer">
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Resource" EntityType="Self.Resource" Schema="dbo" store:Type="Tables" />
@@ -294,7 +296,19 @@
             <End Role="Task" EntitySet="Tasks" />
             <End Role="TaskPredecessor" EntitySet="TaskPredecessors" />
           </AssociationSet>
+          <FunctionImport Name="GetProjectCost" ReturnType="Collection(TaskManagementModel.GetProjectCost_Result)" />
+          <FunctionImport Name="GetTaskCost" ReturnType="Collection(TaskManagementModel.GetTaskCost_Result)" />
         </EntityContainer>
+        <ComplexType Name="GetProjectCost_Result">
+          <Property Type="Int32" Name="ProjectId" Nullable="false" />
+          <Property Type="String" Name="ProjectName" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="ProjectCost" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="GetTaskCost_Result">
+          <Property Type="Int32" Name="ProjectId" Nullable="false" />
+          <Property Type="Int32" Name="TaskId" Nullable="false" />
+          <Property Type="Decimal" Name="TaskCost" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -349,6 +363,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetProjectCost" FunctionName="TaskManagementModel.Store.GetProjectCost">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TaskManagementModel.GetProjectCost_Result">
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+                <ScalarProperty Name="ProjectCost" ColumnName="ProjectCost" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetTaskCost" FunctionName="TaskManagementModel.Store.GetTaskCost">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TaskManagementModel.GetTaskCost_Result">
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="TaskCost" ColumnName="TaskCost" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

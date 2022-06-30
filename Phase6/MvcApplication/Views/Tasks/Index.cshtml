@@ -30,6 +30,12 @@
         <th>
             @Html.DisplayNameFor(model => model.Project.ProjectName)
         </th>
+        <th>
+            TaskCost
+        </th>
+        <th>
+
+        </th>
         <th></th>
     </tr>
 
@@ -52,6 +58,15 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Project.ProjectName)
+        </td>
+        <td>
+            @foreach (var row in ViewBag.TaskCost)
+            {
+                if (row.ProjectId == item.ProjectId && row.TaskId == item.TaskId )
+                {
+                    @row.TaskCost
+                }
+            }
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.TaskId }) |
